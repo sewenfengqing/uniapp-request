@@ -371,7 +371,7 @@ export default {
 	sendLoginOrRegisterRequest,
 	sendRequest,
 	uploadFileRequest,
-	HttpRequeat,
+	HttpRequest,
 	getSession,
 	setSession,
 	clearSession
