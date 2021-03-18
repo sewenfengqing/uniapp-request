@@ -1,7 +1,8 @@
 <template>
 	<view class="container">
 		<button :disabled="logining" @click="login()">登录测试示例</button>
-		<button @click="getNum()">除登录外的业务网络请求示例</button>
+		<button @click="getNum()">除登录外的业务网络请求示例1</button>
+		<button @click="getList()">除登录外的业务网络请求示例2</button>
 	</view>
 </template>
 
@@ -52,6 +53,7 @@ export default {
 		getNum:function(){
 			this.Http.sendRequest({
 				url : "index/index",
+				hideLoading:false,
 				success:function(res){
 					console.log("getNum:"+ JSON.stringify(res));
 					uni.showToast({
@@ -61,6 +63,23 @@ export default {
 				},
 				fail:function(e){},
 				complete:function(){}
+			})
+		},
+		getList:function() {
+			const obj = {
+				method: 'POST',
+				url: 'machine/index',
+				data: {
+					token: true,
+					keyword:''
+				}
+			}
+			this.Http.HttpRequest(obj).then(res => {
+				console.log(JSON.stringify(res))
+				uni.showToast({
+					title: "success",
+					icon:'none'
+				});
 			})
 		},
 	},

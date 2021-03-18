@@ -20,18 +20,6 @@ const hasNetwork = function(){
 }
 //登录请求+注册请求+忘记密码
 const sendLoginOrRegisterRequest = function(param){
-	//为什么程序未执行网络变化的监听：网络发生变化才会触发
-	// uni.onNetworkStatusChange(function(res){
-	// 	// console.log("网络类型:" + res.networkType + ",网络连接:" + res.isConnected);
-	// 	if(!res.isConnected){
-	// 		uni.showToast({
-	// 			title:"网络未连接",
-	// 			icon:'none'
-	// 		});
-	// 		return;
-	// 	}
-	// })
-	
 	// if(!hasNetwork()){//移到页面中判断：适配按钮状态变化的逻辑
 	// 	return;
 	// }
@@ -320,13 +308,14 @@ const clearSession = function(){
 	uni.removeStorageSync(sessionKey);
 }
 
-const HttpRequeat = (options, callback) => {
+//封装除登录外的业务网络请求:Promise是ES6中最重要的特性之一
+const HttpRequest = (options, callback) => {
 	options.data.token = uni.getStorageSync(sessionKey)
 	options.data.device = 'APP'
-	options.data.version = 'V2.0.0'
+	options.data.version = 'V1.0.0'
 	options.data.timestamp = Date.parse(new Date())
 	return new Promise((resolve, reject) => {
-		uni.showLoading({
+			uni.showLoading({
 				mask: true,
 				title: '加载中...'
 			}),
@@ -345,7 +334,7 @@ const HttpRequeat = (options, callback) => {
 							title: res.msg
 						})
 						uni.redirectTo({
-							url: '/pages/login/login.vue'
+							url: '/pages/login/login'
 						})
 					} else if (res.code === '1') {
 						uni.showLoading({
