@@ -1,7 +1,7 @@
 # uniapp-request
 uniapp网络请求封装
 
- 1. http.js中封装（封装网络请求）
+ 1. http.js中封装了网络请求
 ```
 const baseUrl = "https://***.com.cn"
 const sessionKey = "sessionKey";
@@ -314,7 +314,8 @@ const clearSession = function(){
 	uni.removeStorageSync(sessionKey);
 }
 
-const HttpRequeat = (options, callback) => {
+//封装除登录外的业务网络请求:Promise是ES6中最重要的特性之一
+const HttpRequest = (options, callback) => {
 	options.data.token = uni.getStorageSync(sessionKey)
 	options.data.device = 'APP'
 	options.data.version = 'V2.0.0'
@@ -376,7 +377,7 @@ export default {
 	sendLoginOrRegisterRequest,
 	sendRequest,
 	uploadFileRequest,
-	HttpRequeat,
+	HttpRequest,
 	getSession,
 	setSession,
 	clearSession
@@ -407,7 +408,8 @@ app.$mount()
 <template>
 	<view class="container">
 		<button :disabled="logining" @click="login()">登录测试示例</button>
-		<button @click="getNum()">除登录外的业务网络请求示例</button>
+		<button @click="getNum()">除登录外的业务网络请求示例1</button>
+		<button @click="getList()">除登录外的业务网络请求示例2</button>
 	</view>
 </template>
 
@@ -467,6 +469,23 @@ export default {
 				},
 				fail:function(e){},
 				complete:function(){}
+			})
+		},
+		getList:function() {
+			const obj = {
+				method: 'POST',
+				url: 'machine/index',
+				data: {
+					token: true,
+					keyword:''
+				}
+			}
+			this.Http.HttpRequest(obj).then(res => {
+				console.log(JSON.stringify(res))
+				uni.showToast({
+					title: "success",
+					icon:'none'
+				});
 			})
 		},
 	},
